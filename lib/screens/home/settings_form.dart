@@ -19,9 +19,9 @@ class _SettingsFormState extends State<SettingsForm> {
   int _currentstrength = 100;
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<Users?>(context);
+    final user = Provider.of<Users>(context);
     return StreamBuilder<UserData>(
-      stream: DatabaseService(user!.uid).userData,
+      stream: DatabaseService(user.uid).userData,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           UserData? userdata = snapshot.data;

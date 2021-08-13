@@ -7,7 +7,7 @@ class DatabaseService {
   DatabaseService(this.uid);
   final CollectionReference brewData =
       FirebaseFirestore.instance.collection('brews');
-  Future updateUserData(String sugar, String name, int strength) async {
+  Future<void> updateUserData(String sugar, String name, int strength) async {
     return await brewData.doc(uid).set({
       'sugar': sugar,
       'name': name,
@@ -25,8 +25,8 @@ class DatabaseService {
   }
 
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
-    return UserData(uid, snapshot.get('sugar'), snapshot.get(' name'),
-        snapshot.get('strength'));
+    return UserData(
+        snapshot.get('sugar'), snapshot.get(' name'), snapshot.get('strength'));
   }
 
   Stream<List<Brew>> get brewStream {
