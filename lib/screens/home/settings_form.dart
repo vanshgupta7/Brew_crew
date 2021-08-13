@@ -19,12 +19,12 @@ class _SettingsFormState extends State<SettingsForm> {
   int _currentstrength = 100;
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<Users>(context);
+    final user = Provider.of<Users?>(context);
     return StreamBuilder<UserData>(
-      stream: DatabaseService(user.uid).userData,
+      stream: DatabaseService(user!.uid).userData,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          UserData? userdata = snapshot.data;
+          UserData? userData = snapshot.data;
           return Form(
             key: _formkey,
             child: Column(
@@ -37,7 +37,7 @@ class _SettingsFormState extends State<SettingsForm> {
                   height: 20,
                 ),
                 TextFormField(
-                  initialValue: userdata!.name,
+                  initialValue: userData!.name,
                   decoration: textInputDecoration,
                   validator: (val) => val!.isEmpty ? 'Please enter name' : null,
                   onChanged: (val) => setState(() => _currentname = val),
@@ -48,7 +48,7 @@ class _SettingsFormState extends State<SettingsForm> {
                 DropdownButtonFormField(
                   decoration: textInputDecoration,
                   value:
-                      _currentsuugar == '0' ? userdata.sugar : _currentsuugar,
+                      _currentsuugar == '0' ? userData.sugar : _currentsuugar,
                   items: sugars.map((val) {
                     return DropdownMenuItem(
                       child: Text("$val sugars"),
@@ -61,7 +61,7 @@ class _SettingsFormState extends State<SettingsForm> {
                 SizedBox(height: 20),
                 Slider(
                   value: (_currentstrength == 100
-                          ? userdata.strength
+                          ? userData.strength
                           : _currentstrength)
                       .toDouble(),
                   onChanged: (val) =>
@@ -81,11 +81,11 @@ class _SettingsFormState extends State<SettingsForm> {
                     if (_formkey.currentState!.validate()) {
                       await DatabaseService(user.uid).updateUserData(
                           _currentsuugar == '0'
-                              ? userdata.sugar
+                              ? userData.sugar
                               : _currentsuugar,
-                          _currentname == '' ? userdata.name : _currentname,
+                          _currentname == '' ? userData.name : _currentname,
                           _currentstrength == 100
-                              ? userdata.strength
+                              ? userData.strength
                               : _currentstrength);
                       Navigator.pop(context);
                     }

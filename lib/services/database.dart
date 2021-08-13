@@ -26,14 +26,14 @@ class DatabaseService {
 
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserData(
-        snapshot.get('sugar'), snapshot.get(' name'), snapshot.get('strength'));
+        snapshot.get('sugar'), snapshot.get('name'), snapshot.get('strength'));
   }
 
   Stream<List<Brew>> get brewStream {
     return brewData.snapshots().map(_brewListFromSnapshot);
   }
 
-  Stream<UserData> get userData {
+  Stream<UserData>? get userData {
     return brewData.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
 }
